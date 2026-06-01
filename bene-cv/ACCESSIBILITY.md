@@ -5,7 +5,7 @@ Este documento mapeia cada critério **WCAG 2.2 nível AA** atendido por este CV
 **Última auditoria interna:** 2026-06-01
 **Conformidade declarada:** WCAG 2.2 AA (com elementos AAA pontuais)
 **Página auditada:** <https://benearagao.com.br>
-**Evidência automatizada:** suite `tests/` (Playwright + axe-core) — `npm test` → 8/8 teclado, axe 0 violações (45 checks). Roda no GitHub Action e barra deploy se falhar.
+**Evidência automatizada:** suite `tests/` (`npm test`) → html-validate 0 erros · 8/8 teclado · axe-core 0 violações (41 checks). Roda no GitHub Action e barra o deploy se falhar.
 
 ---
 
@@ -52,11 +52,14 @@ Todos os pares de cor validados sobre `#FFFFFF`:
 
 | Token | Cor | Contraste | Conformidade |
 |---|---|---|---|
-| `--ink-primary` | `#1A1A1A` | 18.88:1 | AAA |
-| `--ink-secondary` | `#4A4A4A` | 9.27:1 | AAA |
-| `--ink-tertiary` | `#6B6B6B` | 5.74:1 | AA |
-| `--accent` | `#0F766E` | 5.50:1 | AA (texto normal) |
-| `--border` | `#D4D4D4` | 3.05:1 | AA (UI component) |
+| `--ink-primary` | `#1A1A1A` | 17.40:1 | AAA |
+| `--ink-secondary` | `#4A4A4A` | 8.86:1 | AAA |
+| `--ink-tertiary` | `#6B6B6B` | 5.33:1 | AA |
+| `--accent` | `#0F766E` | 5.47:1 | AA (texto normal) |
+| `--border` | `#D4D4D4` | 1.48:1 | decorativo (ver 1.4.11) |
+| `--border-strong` | `#8E8E8E` | 3.28:1 | AA (componente de UI) |
+
+> Valores recalculados em 2026-06-01 contra a fórmula WCAG (confere com WebAIM). A tabela anterior estava superestimada e foi corrigida.
 
 ### 1.4.4 Redimensionar texto (AA)
 - Fontes em `rem`. Container em `max-width` (não `width` fixo). Zoom até 200% sem perda de funcionalidade ou conteúdo.
@@ -68,8 +71,9 @@ Todos os pares de cor validados sobre `#FFFFFF`:
 - Layout reflua em 320 CSS pixels sem scroll horizontal. Media queries em breakpoints estratégicos no `styles.css`.
 
 ### 1.4.11 Contraste de não-texto (AA)
-- `--border` (3.05:1) atende para componentes de UI.
-- Focus indicator (`outline: 2px solid var(--accent)`) bem acima de 3:1.
+- `--border` (#D4D4D4, 1.48:1) é usado **apenas em divisores decorativos** (`border-bottom` entre seções e contornos de *chips* não-interativos com texto de alto contraste). Divisores e elementos puramente decorativos são **isentos** de 1.4.11.
+- Componentes interativos usam `--border-strong` (#8E8E8E, **3.28:1** — passa AA): borda do botão "Baixar PDF".
+- Focus indicator (`outline: 2px solid var(--accent)`, 5.47:1) bem acima de 3:1.
 
 ### 1.4.12 Espaçamento de texto (AA)
 - Sem `line-height`, `letter-spacing` ou `word-spacing` declarados em `!important` que impediriam override por user stylesheets.
@@ -139,6 +143,7 @@ Todos os pares de cor validados sobre `#FFFFFF`:
 ### 2.5.8 Tamanho do alvo (mínimo) (AA — **novo WCAG 2.2**)
 - Botão "Baixar PDF": padding `0.5rem 0.875rem` + texto + ícone → área clicável ~96×34px (≥24×24 exigido).
 - Contact links: `padding: 4px 0` + texto inline-flex → atendem 24×24 quando contam com espaçamento entre alvos.
+- Links de projeto (`imprimenovizinho.com.br`, `corretoratotalbrasilia.com.br`): ~18px de altura, mas são **links inline dentro do `<h3>`**, cuja altura é limitada pelo line-height do texto adjacente → cobertos pela **exceção de inline** do 2.5.8.
 
 ---
 
@@ -190,7 +195,7 @@ Todos os pares de cor validados sobre `#FFFFFF`:
 
 | Critério | Nível | Implementação |
 |---|---|---|
-| 1.4.6 Contraste aprimorado | AAA | `--ink-primary` em 18.88:1, muito além de 7:1 |
+| 1.4.6 Contraste aprimorado | AAA | `--ink-primary` em 17.40:1, muito além de 7:1 |
 | 2.3.3 Animação de interações | AAA | `@media (prefers-reduced-motion: reduce)` desativa transições |
 | Forced colors mode | (W3C draft) | `@media (forced-colors: active)` mapeia tokens para system colors |
 

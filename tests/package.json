@@ -4,12 +4,14 @@
   "private": true,
   "description": "Suite de testes automatizados de acessibilidade para o CV (não vai para produção)",
   "scripts": {
+    "test:html": "html-validate ../bene-cv/index.html",
     "test:keyboard": "node keyboard.spec.js",
     "test:a11y": "node a11y.spec.js",
-    "test": "npm run test:keyboard && npm run test:a11y"
+    "test": "npm run test:html && npm run test:keyboard && npm run test:a11y"
   },
   "devDependencies": {
-    "playwright": "^1.49.0",
-    "@axe-core/playwright": "^4.10.0"
+    "@axe-core/playwright": "^4.10.0",
+    "html-validate": "^11.5.0",
+    "playwright": "^1.49.0"
   }
 }

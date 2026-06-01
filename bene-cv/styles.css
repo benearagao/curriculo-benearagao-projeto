@@ -5,14 +5,15 @@
    ============================================================= */
 
 :root {
-  /* Cores — todas validadas para contraste AA sobre #FFFFFF */
-  --ink-primary:   #1A1A1A; /* 18.88:1 vs #FFF */
-  --ink-secondary: #4A4A4A; /* 9.27:1 vs #FFF */
-  --ink-tertiary:  #6B6B6B; /* 5.74:1 vs #FFF — meta-info ainda legível */
-  --accent:        #0F766E; /* teal · 5.50:1 vs #FFF — AA normal text */
+  /* Cores — contraste validado sobre #FFFFFF (WebAIM / WCAG 1.4.3) */
+  --ink-primary:   #1A1A1A; /* 17.40:1 vs #FFF — AAA */
+  --ink-secondary: #4A4A4A; /* 8.86:1 vs #FFF — AAA */
+  --ink-tertiary:  #6B6B6B; /* 5.33:1 vs #FFF — AA, meta-info legível */
+  --accent:        #0F766E; /* teal · 5.47:1 vs #FFF — AA normal text */
   --bg:            #FFFFFF;
   --bg-subtle:     #F9F9F9;
-  --border:        #D4D4D4; /* contraste 3:1 vs #FFF — UI component AA */
+  --border:        #D4D4D4; /* 1.48:1 — APENAS divisores decorativos (isentos de 1.4.11) */
+  --border-strong: #8E8E8E; /* 3.28:1 vs #FFF — bordas de componentes interativos (1.4.11 AA) */
 
   /* Tipografia */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -142,7 +143,7 @@ ul { padding: 0; margin: 0; list-style: none; }
   padding: 0.5rem 0.875rem;
   background: var(--bg);
   color: var(--ink-primary);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: 999px;
   font-family: var(--font-sans);
   font-size: var(--text-sm);

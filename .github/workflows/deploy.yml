@@ -67,6 +67,7 @@ jobs:
             **/.git*/**
             **/node_modules/**
             **/README.md
+            **/.htmlvalidate.json
             **/*.sh
             **/.DS_Store
           log-level: standard
