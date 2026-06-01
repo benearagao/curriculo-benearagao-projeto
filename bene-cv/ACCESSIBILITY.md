@@ -28,7 +28,7 @@ Este documento mapeia cada critério **WCAG 2.2 nível AA** atendido por este CV
 - **Skip link** com texto visível ao focar.
 
 ### 1.3.1 Informação e relações (A)
-- Estrutura semântica: `<header role="banner">`, `<main>`, `<aside>`, `<footer role="contentinfo">`, `<article>`, `<section aria-labelledby="…">`.
+- Estrutura semântica: `<header>` (papel implícito `banner`), `<main>`, `<aside>`, `<footer>` (papel implícito `contentinfo`), `<article>`, `<section aria-labelledby="…">`. Roles explícitos foram omitidos por serem redundantes (regra nº 1 do ARIA).
 - Hierarquia de headings: `h1` (nome) → `h2` (seções) → `h3` (cargos/projetos). Sem buracos.
 - Listas reais: `<ul>`, `<ol>`, `<dl>` (skills usam definition list para par categoria/tecnologias).
 

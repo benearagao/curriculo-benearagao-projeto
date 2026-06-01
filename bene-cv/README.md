@@ -60,14 +60,20 @@ Cabe em **uma página A4**.
 ## Validar acessibilidade
 
 ```bash
-# 1. Lighthouse (Chrome DevTools → Lighthouse → Accessibility)
-#    Meta: 100/100
+# Suite automatizada (a mesma que roda no CI e barra o deploy)
+#   html-validate + navegação por teclado (Playwright) + axe-core
+python3 -m http.server 4321 &        # a partir desta pasta (bene-cv/)
+cd ../tests && npm install
+BASE_URL=http://localhost:4321/ npm test
+#   → html-validate: 0 erros · teclado: 8/8 · axe: 0 violações
+#   Requer Node ≥ 22.22.
 
-# 2. axe DevTools (extensão Chrome/Firefox) → 0 violações
-
-# 3. Validação HTML
-npx html-validate index.html
+# Complementos no navegador:
+# - Lighthouse (DevTools → Accessibility) — meta 100/100
+# - axe DevTools (extensão Chrome/Firefox) → 0 violações
 ```
+
+Relatório de auditoria datado: [`../AUDITORIA-A11Y-2026-06-01.md`](../AUDITORIA-A11Y-2026-06-01.md).
 
 Testes manuais essenciais:
 - Navegação só por teclado (Tab/Shift+Tab/Enter); o **skip link** aparece no primeiro Tab.
@@ -139,7 +145,7 @@ Validar preview em <https://www.opengraph.xyz>.
 | Decisão | Por quê |
 |---|---|
 | **HTML5 + CSS3 puro, zero build** | Coerência com o pitch de a11y e domínio fundamental. Deploy é cópia de arquivos. Sobrevive a qualquer mudança de stack. |
-| **Accent `#0F766E` (teal)** | Contraste 5.50:1 sobre `#FFF` — AA texto normal. `theme-color` alinhado. |
+| **Accent `#0F766E` (teal)** | Contraste 5.47:1 sobre `#FFF` — AA texto normal. `theme-color` alinhado. |
 | **Tipografia: Inter + JetBrains Mono** | Inter para corpo (legibilidade Web), Mono para badges/códigos. Features OpenType: kerning + tabular-nums em datas. |
 | **Sem ícones decorativos no corpo** | Reduz ruído cognitivo. Os 5 ícones de contato são `aria-hidden="true"`. |
 | **Skills via `<dl>`, sem barras** | Honesto e acessível. Barras de "85% de Figma" são teatro. |

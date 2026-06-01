@@ -29,8 +29,8 @@ Se você é alguém procurando emprego e quer um CV que **diga e prove** o que v
 | Estilo | CSS3 puro · tokens em `:root` · grid/flex · `@media print` | Zero build, sobrevive a qualquer mudança de stack |
 | A11y | WCAG 2.2 AA · ARIA · `prefers-reduced-motion` · `forced-colors` | Auditado, não declarado |
 | Hosting | Apache na Locaweb · `.htaccess` (gzip, cache 1 ano, HSTS) | Barato, estável, suficiente |
-| CI/CD | GitHub Actions → FTP automático | Push em `main` = site no ar |
-| Testes | Playwright (navegação por teclado) · axe-core | Verificável, não opinião |
+| CI/CD | GitHub Actions → auditoria a11y → FTP automático | Push em `main` = audit roda e, se passar, site no ar |
+| Testes | html-validate · Playwright (teclado) · axe-core | Verificável, não opinião — **barram o deploy se falharem** |
 
 ---
 
@@ -42,15 +42,19 @@ Se você é alguém procurando emprego e quer um CV que **diga e prove** o que v
 │   ├── index.html              # CV completo, semântico, com JSON-LD
 │   ├── styles.css              # Tokens + layout + print + a11y queries
 │   ├── .htaccess               # Cache, gzip, security headers
+│   ├── .htmlvalidate.json      # Config do html-validate (não vai para produção)
 │   ├── robots.txt              # Crawlers
 │   ├── sitemap.xml             # Sitemap
-│   ├── ACCESSIBILITY.md        # ⭐ Checklist WCAG 2.2 AA auditável
+│   ├── ACCESSIBILITY.md        # ⭐ Checklist WCAG 2.2 AA auditável (mapa critério → código)
 │   ├── README.md               # Guia técnico do site
 │   └── assets/                 # favicon, foto, og-image
 ├── .github/workflows/
-│   └── deploy.yml              # FTP deploy em push para main
-├── tests/                      # Playwright (não vai para produção)
-│   └── keyboard.spec.js        # Testes WCAG 2.4.x e 2.1.x automatizados
+│   └── deploy.yml              # Job audit (a11y) → deploy FTP, em push para main
+├── tests/                      # Suite de auditoria (não vai para produção)
+│   ├── a11y.spec.js            # axe-core: scan WCAG 2.0/2.1/2.2 A+AA
+│   ├── keyboard.spec.js        # Playwright: WCAG 2.1.x e 2.4.x
+│   └── package.json            # npm test = html-validate + teclado + axe
+├── AUDITORIA-A11Y-2026-06-01.md  # Relatório de auditoria datado e reproduzível
 └── README.md                   # Este arquivo
 ```
 
@@ -85,21 +89,25 @@ Se você é alguém procurando emprego e quer um CV que **diga e prove** o que v
 
 ## Acessibilidade auditável
 
-A acessibilidade aqui não é claim, é evidência. Cada critério WCAG 2.2 AA atendido está mapeado para o trecho de código que o satisfaz em **[`bene-cv/ACCESSIBILITY.md`](./bene-cv/ACCESSIBILITY.md)**.
+A acessibilidade aqui não é claim, é evidência. Cada critério WCAG 2.2 AA atendido está mapeado para o trecho de código que o satisfaz em **[`bene-cv/ACCESSIBILITY.md`](./bene-cv/ACCESSIBILITY.md)**, e o relatório de auditoria datado está em **[`AUDITORIA-A11Y-2026-06-01.md`](./AUDITORIA-A11Y-2026-06-01.md)**.
+
+A suite automatizada **roda no CI a cada push e barra o deploy se qualquer item falhar** — o site só sobe se a auditoria passar.
 
 Como auditar você mesmo:
 
 ```bash
-# 1. Lighthouse (Chrome DevTools → Lighthouse → Accessibility)
-#    Meta: 100/100
+# Suite completa (html-validate + navegação por teclado + axe-core)
+cd bene-cv && python3 -m http.server 4321 &   # serve o site
+cd tests && npm install
+BASE_URL=http://localhost:4321/ npm test
+#   → html-validate: 0 erros · teclado: 8/8 · axe: 0 violações
 
-# 2. axe DevTools (extensão) → 0 violações
-
-# 3. Testes automatizados de teclado (Playwright)
-cd tests
-npm install
-npm run test:keyboard
+# Complementos manuais no navegador:
+# - Lighthouse (DevTools → Accessibility) — meta 100/100
+# - axe DevTools (extensão) → 0 violações
 ```
+
+> Requer Node ≥ 22.22 (o `html-validate` usa `fs.globSync`).
 
 Testes manuais: navegação só por teclado (skip link no primeiro `Tab`), VoiceOver/NVDA, `prefers-reduced-motion` ativo, `forced-colors: active` (High Contrast Mode do Windows).
 
@@ -112,7 +120,7 @@ Resumo das decisões — explicação completa em [`bene-cv/README.md`](./bene-c
 | Decisão | Por quê |
 |---|---|
 | **Zero build, zero framework** | Coerência com o pitch de fundamentos. Deploy é cópia de arquivos. Sobrevive a qualquer mudança de stack. |
-| **Accent `#0F766E` (teal)** | Contraste 5.50:1 sobre `#FFF` — AA texto normal. `theme-color` alinhado. |
+| **Accent `#0F766E` (teal)** | Contraste 5.47:1 sobre `#FFF` — AA texto normal. `theme-color` alinhado. |
 | **Inter + JetBrains Mono** | Inter para corpo (legibilidade web). Mono para badges/códigos. OpenType features ativadas (kern, liga, tabular-nums). |
 | **Skills via `<dl>`, sem barras** | Honesto e acessível. Barras de "85% de Figma" são teatro. |
 | **`prefers-reduced-motion` + `forced-colors`** | Não é decoração — é WCAG 2.3.3 + suporte ao High Contrast do Windows. |
