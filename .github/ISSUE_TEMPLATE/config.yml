@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: "Ver o CV no ar"
+    url: "https://benearagao.com.br"
+    about: "Teste a acessibilidade você mesmo antes de abrir uma issue."
+  - name: "Como contribuir"
+    url: "https://github.com/benearagao/curriculo-benearagao-projeto/blob/main/CONTRIBUTING.md"
+    about: "Guia para reportar problemas ou enviar correções, e como rodar a suíte."

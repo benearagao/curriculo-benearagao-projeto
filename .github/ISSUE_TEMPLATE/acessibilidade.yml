@@ -1,0 +1,66 @@
+name: "♿ Relato de acessibilidade"
+description: "Encontrou uma barreira de acessibilidade ou tem uma sugestão de melhoria? Conte aqui."
+title: "[a11y] "
+labels: ["acessibilidade"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por ajudar! Não precisa ter certeza de que é um bug "oficial" — se pareceu errado pra você, vale o relato. Preencha o que conseguir.
+  - type: textarea
+    id: descricao
+    attributes:
+      label: O que aconteceu?
+      description: Descreva a barreira ou a sugestão. O que você esperava e o que aconteceu?
+      placeholder: "Ex.: usando o VoiceOver, o link do projeto é anunciado sem dizer que abre em nova aba."
+    validations:
+      required: true
+  - type: input
+    id: local
+    attributes:
+      label: Onde na página?
+      description: Seção ou elemento (ex.: cabeçalho, selo W3Cx, links de contato, botão Baixar PDF).
+    validations:
+      required: false
+  - type: dropdown
+    id: ferramenta
+    attributes:
+      label: Como você testou?
+      multiple: true
+      options:
+        - Só teclado
+        - Leitor de tela — VoiceOver (macOS/iOS)
+        - Leitor de tela — NVDA (Windows)
+        - Leitor de tela — outro
+        - Lighthouse
+        - axe DevTools
+        - Zoom 200% / reflow
+        - Modo de alto contraste (forced-colors)
+        - Inspeção visual
+        - Outro
+    validations:
+      required: false
+  - type: input
+    id: ambiente
+    attributes:
+      label: Navegador e sistema
+      placeholder: "Ex.: Safari 18 / macOS 15 · Chrome 130 / Windows 11"
+    validations:
+      required: false
+  - type: input
+    id: wcag
+    attributes:
+      label: Critério WCAG (se souber)
+      placeholder: "Ex.: 1.4.3 Contraste · 2.4.7 Foco visível"
+    validations:
+      required: false
+  - type: textarea
+    id: passos
+    attributes:
+      label: Passos para reproduzir (opcional)
+      placeholder: |
+        1. Abra https://benearagao.com.br
+        2. Pressione Tab até o link de contato
+        3. ...
+    validations:
+      required: false

@@ -135,6 +135,15 @@ Resumo das decisões — explicação completa em [`bene-cv/README.md`](./bene-c
 
 ---
 
+## Contribuir / reportar um problema de acessibilidade
+
+Testou e achou algo? Tem uma sugestão? **Toda recomendação é bem-vinda** — acessibilidade evolui na prática e em comunidade.
+
+- 🐛 [Abra uma issue](../../issues/new/choose) usando o template **"Relato de acessibilidade"**.
+- 🔧 Ou envie um PR — o guia completo (incluindo como rodar a suíte) está em **[`CONTRIBUTING.md`](./CONTRIBUTING.md)**.
+
+---
+
 ## Inspiração e crédito
 
 - **Construção / IA:** desenvolvido com auxílio do [Claude Code](https://claude.com/claude-code) (Anthropic) — pair-programming AI-augmented desde 2024.
