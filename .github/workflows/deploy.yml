@@ -5,13 +5,51 @@ on:
     branches: [main]
     paths:
       - 'bene-cv/**'
+      - 'tests/**'
       - '.github/workflows/deploy.yml'
+  pull_request:
+    paths:
+      - 'bene-cv/**'
+      - 'tests/**'
   workflow_dispatch:
 
 jobs:
+  audit:
+    name: Auditoria de acessibilidade (WCAG 2.2 AA)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências de teste
+        working-directory: tests
+        run: npm ci
+
+      - name: Instalar Chromium (Playwright)
+        working-directory: tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Servir o site estático
+        run: |
+          python3 -m http.server 4321 --directory bene-cv &
+          npx --yes wait-on http://localhost:4321/
+
+      - name: Rodar suite (teclado + axe-core)
+        working-directory: tests
+        env:
+          BASE_URL: http://localhost:4321/
+        run: npm test
+
   deploy:
     name: FTP Upload to public_html
     runs-on: ubuntu-latest
+    needs: audit
+    if: github.event_name != 'pull_request'
     steps:
       - name: Checkout
         uses: actions/checkout@v4

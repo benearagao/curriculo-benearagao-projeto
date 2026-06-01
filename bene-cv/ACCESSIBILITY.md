@@ -2,9 +2,10 @@
 
 Este documento mapeia cada critério **WCAG 2.2 nível AA** atendido por este CV ao trecho de código que o satisfaz. Foi construído para ser auditável por qualquer pessoa que rode Lighthouse / axe DevTools / NVDA / VoiceOver sobre a página.
 
-**Última auditoria interna:** 2026-05-26
+**Última auditoria interna:** 2026-06-01
 **Conformidade declarada:** WCAG 2.2 AA (com elementos AAA pontuais)
 **Página auditada:** <https://benearagao.com.br>
+**Evidência automatizada:** suite `tests/` (Playwright + axe-core) — `npm test` → 8/8 teclado, axe 0 violações (45 checks). Roda no GitHub Action e barra deploy se falhar.
 
 ---
 

@@ -91,6 +91,9 @@ function hasVisibleFocus(info) {
   // TEST 1 — Skip link é o primeiro elemento focável (WCAG 2.4.1)
   // ============================================================
   await page.keyboard.press('Tab');
+  // O skip link revela-se com `transition: top 0.15s`; espera a animação
+  // assentar antes de medir a posição (senão lemos um quadro intermediário).
+  await page.waitForTimeout(250);
   const first = await focusInfo(page);
 
   record(
