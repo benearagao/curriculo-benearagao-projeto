@@ -131,12 +131,16 @@ ul { padding: 0; margin: 0; list-style: none; }
   outline-offset: 2px;
 }
 
-/* Botão "Baixar PDF" — flutuante, sutil ============== */
-.action-print {
+/* Botões de ação flutuantes (PDF + compartilhar) ====== */
+.page-actions {
   position: fixed;
   top: var(--space-2);
   right: var(--space-2);
   z-index: 100;
+  display: flex;
+  gap: var(--space-1);
+}
+.action-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -153,22 +157,44 @@ ul { padding: 0; margin: 0; list-style: none; }
   box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06);
   transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease, color 0.12s ease;
 }
-.action-print:hover {
+.action-btn:hover {
   transform: translateY(-1px);
   border-color: var(--accent);
   color: var(--accent);
   box-shadow: 0 2px 4px rgba(0,0,0,0.06), 0 8px 20px rgba(0,0,0,0.08);
 }
-.action-print:active {
+.action-btn:active {
   transform: translateY(0);
 }
-.action-print:focus-visible {
+.action-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-.action-print .icon {
+.action-btn .icon {
   color: var(--accent);
   flex-shrink: 0;
+}
+
+/* Feedback acessível do compartilhar (toast) */
+.action-feedback {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  right: 0;
+  white-space: nowrap;
+  background: var(--ink-primary);
+  color: #FFFFFF;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+}
+.action-feedback.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Container ================================================= */
@@ -644,7 +670,7 @@ ul { padding: 0; margin: 0; list-style: none; }
   }
 
   /* Esconde elementos interativos no PDF */
-  .action-print,
+  .page-actions,
   .skip-link {
     display: none !important;
   }
@@ -841,6 +867,7 @@ ul { padding: 0; margin: 0; list-style: none; }
   }
 
   .icon { color: CanvasText !important; }
+  .action-feedback { background: Canvas; color: CanvasText; border: 1px solid CanvasText; }
   .skip-link { background: Canvas; color: CanvasText; border: 2px solid CanvasText; }
   .badge { background: Canvas; }
   .profile { background: Canvas; }

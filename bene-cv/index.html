@@ -98,22 +98,37 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap">
 
-  <link rel="stylesheet" href="styles.css?v=20260528">
+  <link rel="stylesheet" href="styles.css?v=20260601">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Pular para o conteúdo principal</a>
 
-  <button
-    type="button"
-    class="action-print"
-    onclick="window.print()"
-    aria-label="Imprimir ou salvar este currículo como PDF"
-  >
-    <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="16" height="16">
-      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/>
-    </svg>
-    <span>Baixar PDF</span>
-  </button>
+  <div class="page-actions">
+    <button
+      type="button"
+      class="action-btn action-print"
+      onclick="window.print()"
+      aria-label="Imprimir ou salvar este currículo como PDF"
+    >
+      <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="16" height="16">
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/>
+      </svg>
+      <span>Baixar PDF</span>
+    </button>
+
+    <button
+      type="button"
+      class="action-btn action-share"
+      aria-label="Compartilhar este currículo"
+    >
+      <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="16" height="16">
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/>
+      </svg>
+      <span>Compartilhar</span>
+    </button>
+
+    <span class="action-feedback" id="share-feedback" role="status" aria-live="polite"></span>
+  </div>
 
   <div class="page">
     <header class="header">
@@ -351,6 +366,41 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Compartilhar: Web Share API nativo, com fallback para copiar o link.
+    (function () {
+      var btn = document.querySelector('.action-share');
+      var feedback = document.getElementById('share-feedback');
+      if (!btn || !feedback) return;
+      var timer;
+
+      function announce(msg) {
+        feedback.textContent = msg;
+        feedback.classList.add('is-visible');
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          feedback.classList.remove('is-visible');
+        }, 3000);
+      }
+
+      btn.addEventListener('click', function () {
+        var url = window.location.href;
+        var data = { title: document.title, text: 'Currículo de Bené Aragão', url: url };
+
+        if (navigator.share) {
+          navigator.share(data).catch(function () { /* usuário cancelou */ });
+          return;
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(
+            function () { announce('Link copiado!'); },
+            function () { announce('Copie o link na barra de endereços'); }
+          );
+          return;
+        }
+        announce('Copie o link na barra de endereços');
+      });
+    })();
   </script>
 </body>
 </html>
